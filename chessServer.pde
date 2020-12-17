@@ -8,18 +8,18 @@ PImage wrook, wbishop, wknight, wqueen, wking, wpawn;
 PImage brook, bbishop, bknight, bqueen, bking, bpawn;
 boolean firstClick;
 boolean turn = false;
-int row1, col1, row2, col2;
+int row1, col1, row2, col2, E;
 
 
 char grid[][] = {
-  {'R', 'B', 'N', 'Q', 'K', 'N', 'B', 'R'}, 
+  {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}, 
   {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'}, 
   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, 
   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, 
   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, 
   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, 
   {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'}, 
-  {'r', 'b', 'n', 'q', 'k', 'n', 'b', 'r'}
+  {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'}
 };
 
 void setup() {
@@ -30,6 +30,8 @@ void setup() {
   textSize(20);
   myServer = new Server(this, 1234);
   firstClick = true;
+
+  E = 0;
 
   brook = loadImage("blackRook.png");
   bbishop = loadImage("blackBishop.png");
@@ -106,14 +108,14 @@ void drawPieces() {
 }
 
 void mouseReleased() {
-  if (firstClick) {
+  if (E == 0 && firstClick) {
     row1 = mouseY/100;
     col1 = mouseX/100;
     firstClick = false;
   } else {
     row2 = mouseY/100;
     col2 = mouseX/100;
-    if (!(turn && row2 == row1 && col2 == col1)) {
+    if (turn && !(row2 == row1 && col2 == col1)) {
       grid[row2][col2] = grid[row1][col1];
       grid[row1][col1] = ' ';
       myServer.write(row1 + "," + col1 + "," + row2 + "," + col2);
